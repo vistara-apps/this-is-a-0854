@@ -1,8 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { Shield, TrendingUp, Zap, ChevronRight } from 'lucide-react';
+import { useAccount } from 'wagmi';
+import { Shield, TrendingUp, Zap, ChevronRight, Check } from 'lucide-react';
+import OnboardingFlow from './OnboardingFlow';
 
 const WelcomeScreen = () => {
+  const { isConnected } = useAccount();
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  const handleGetStarted = () => {
+    if (isConnected) {
+      setShowOnboarding(true);
+    }
+  };
+
+  const handleOnboardingComplete = (data) => {
+    console.log('Onboarding completed with data:', data);
+    // In a real implementation, this would save the data and redirect to the dashboard
+    // For now, we'll rely on the App component to detect the connected wallet and show the dashboard
+  };
+
+  // If connected and onboarding is shown, render the onboarding flow
+  if (isConnected && showOnboarding) {
+    return (
+      <div className="min-h-screen gradient-bg py-12">
+        <div className="container mx-auto px-6">
+          <header className="flex flex-col sm:flex-row justify-between items-center mb-16">
+            <div className="flex items-center space-x-3 mb-4 sm:mb-0">
+              <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
+                <Zap className="w-6 h-6 text-white" />
+              </div>
+              <h1 className="text-2xl font-bold text-dark-text">LighterYield</h1>
+            </div>
+            <ConnectButton />
+          </header>
+          
+          <OnboardingFlow onComplete={handleOnboardingComplete} />
+        </div>
+      </div>
+    );
+  }
+
+  // Otherwise, render the welcome screen
   return (
     <div className="min-h-screen gradient-bg">
       <div className="container mx-auto px-6 py-12">
@@ -30,19 +69,29 @@ const WelcomeScreen = () => {
             without moving your L1 assets.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <ConnectButton.Custom>
-              {({ account, chain, openConnectModal, mounted }) => {
-                return (
-                  <button
-                    onClick={openConnectModal}
-                    className="px-8 py-4 bg-accent hover:bg-accent/90 text-white rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
-                  >
-                    <span>Get Started</span>
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                );
-              }}
-            </ConnectButton.Custom>
+            {isConnected ? (
+              <button
+                onClick={handleGetStarted}
+                className="px-8 py-4 bg-accent hover:bg-accent/90 text-white rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
+              >
+                <span>Get Started</span>
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            ) : (
+              <ConnectButton.Custom>
+                {({ account, chain, openConnectModal, mounted }) => {
+                  return (
+                    <button
+                      onClick={openConnectModal}
+                      className="px-8 py-4 bg-accent hover:bg-accent/90 text-white rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
+                    >
+                      <span>Connect Wallet</span>
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  );
+                }}
+              </ConnectButton.Custom>
+            )}
           </div>
         </div>
 
@@ -79,6 +128,77 @@ const WelcomeScreen = () => {
               Dynamic dashboard showing available trading margin based on 
               your collateral and current market conditions.
             </p>
+          </div>
+        </div>
+
+        {/* Pricing Section */}
+        <div className="mt-20 mb-20">
+          <h2 className="text-3xl font-bold text-dark-text text-center mb-12">Simple, Transparent Pricing</h2>
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="glass-effect rounded-lg p-8 border border-dark-border hover:border-accent transition-colors">
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold text-dark-text mb-2">Basic</h3>
+                <div className="text-4xl font-bold text-accent mb-2">$10<span className="text-lg text-dark-textSecondary">/month</span></div>
+                <p className="text-dark-textSecondary">Perfect for getting started</p>
+              </div>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center space-x-3">
+                  <Check className="w-5 h-5 text-accent" />
+                  <span className="text-dark-text">Yield Aggregation Dashboard</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <Check className="w-5 h-5 text-accent" />
+                  <span className="text-dark-text">Basic Analytics</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <Check className="w-5 h-5 text-accent" />
+                  <span className="text-dark-text">Manual Yield Rebalancing</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <Check className="w-5 h-5 text-accent" />
+                  <span className="text-dark-text">zk-Proof Generation</span>
+                </li>
+              </ul>
+              <button className="w-full py-3 bg-accent hover:bg-accent/90 text-white rounded-lg font-semibold transition-colors">
+                Get Started
+              </button>
+            </div>
+            
+            <div className="glass-effect rounded-lg p-8 border-2 border-accent relative">
+              <div className="absolute top-0 right-0 bg-accent text-white px-4 py-1 rounded-bl-lg rounded-tr-lg text-sm font-semibold">
+                POPULAR
+              </div>
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold text-dark-text mb-2">Pro</h3>
+                <div className="text-4xl font-bold text-accent mb-2">$50<span className="text-lg text-dark-textSecondary">/month</span></div>
+                <p className="text-dark-textSecondary">For serious yield optimizers</p>
+              </div>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center space-x-3">
+                  <Check className="w-5 h-5 text-accent" />
+                  <span className="text-dark-text">Everything in Basic</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <Check className="w-5 h-5 text-accent" />
+                  <span className="text-dark-text">Advanced Analytics</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <Check className="w-5 h-5 text-accent" />
+                  <span className="text-dark-text">Automatic Yield Rebalancing</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <Check className="w-5 h-5 text-accent" />
+                  <span className="text-dark-text">Priority Support</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <Check className="w-5 h-5 text-accent" />
+                  <span className="text-dark-text">AI-Powered Trading Insights</span>
+                </li>
+              </ul>
+              <button className="w-full py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-semibold transition-colors">
+                Upgrade to Pro
+              </button>
+            </div>
           </div>
         </div>
 

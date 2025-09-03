@@ -1,10 +1,12 @@
 import React from 'react';
-import { TrendingUp, Target, Shield, Layers, CreditCard, Zap } from 'lucide-react';
+import { TrendingUp, Target, Shield, Layers, CreditCard, Zap, ArrowUpDown, ExternalLink } from 'lucide-react';
 
 const Sidebar = ({ activeView, setActiveView }) => {
   const menuItems = [
     { id: 'yield', label: 'Yield Dashboard', icon: TrendingUp },
-    { id: 'margin', label: 'Margin Trading', icon: Target },
+    { id: 'rebalancer', label: 'Yield Rebalancer', icon: ArrowUpDown },
+    { id: 'margin', label: 'Margin Dashboard', icon: Target },
+    { id: 'trading', label: 'Trading Preparation', icon: ExternalLink },
     { id: 'proofs', label: 'zk-Proofs', icon: Shield },
     { id: 'collateral', label: 'Collateral', icon: Layers },
     { id: 'subscription', label: 'Subscription', icon: CreditCard },

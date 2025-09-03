@@ -1,4 +1,5 @@
 import '@rainbow-me/rainbowkit/styles.css';
+import './fonts.css';
 import {
   getDefaultConfig,
   RainbowKitProvider,

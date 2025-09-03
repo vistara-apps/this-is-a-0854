@@ -6,6 +6,8 @@ import MarginDashboard from './MarginDashboard';
 import ProofManager from './ProofManager';
 import SubscriptionManager from './SubscriptionManager';
 import CollateralManager from './CollateralManager';
+import YieldRebalancer from './YieldRebalancer';
+import TradingPreparation from './TradingPreparation';
 
 const DashboardLayout = () => {
   const [activeView, setActiveView] = useState('yield');
@@ -22,6 +24,10 @@ const DashboardLayout = () => {
         return <CollateralManager />;
       case 'subscription':
         return <SubscriptionManager />;
+      case 'rebalancer':
+        return <YieldRebalancer />;
+      case 'trading':
+        return <TradingPreparation />;
       default:
         return <YieldDashboard />;
     }

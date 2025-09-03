@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAccount } from 'wagmi';
-import { ArrowRight, ArrowLeft, Check, Wallet, Scan, ChartBar, Shield } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, Wallet, Scan, BarChart, Shield } from 'lucide-react';
 import CollateralScanner from './CollateralScanner';
 
 const OnboardingFlow = ({ onComplete }) => {
@@ -122,7 +122,7 @@ const OnboardingFlow = ({ onComplete }) => {
           <div className="space-y-6 animate-fade-in">
             <div className="text-center mb-6">
               <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <ChartBar className="w-8 h-8 text-accent" />
+                <BarChart className="w-8 h-8 text-accent" />
               </div>
               <h2 className="text-2xl font-bold text-dark-text mb-2">Yield Preferences</h2>
               <p className="text-dark-textSecondary max-w-md mx-auto">
@@ -284,4 +284,3 @@ const OnboardingFlow = ({ onComplete }) => {
 };
 
 export default OnboardingFlow;
-
